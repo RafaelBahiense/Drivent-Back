@@ -16,6 +16,6 @@ router.use("/users", userRouter);
 router.use("/auth", authRouter);
 router.use("/enrollments", tokenValidationMiddleware, enrollmentRouter);
 router.use("/hotels", tokenValidationMiddleware, hotelRouter);
-router.use("/reservations", tokenValidationMiddleware, reservationRouter);
+router.use("/reservation", tokenValidationMiddleware, reservationRouter);
 
 export default router;
