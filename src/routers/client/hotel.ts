@@ -4,6 +4,6 @@ import * as controller from "@/controllers/client/hotel";
 
 const router = Router();
 
-router.get("/hotels", controller.get);
+router.get("/", controller.getHotelInfo);
 
 export default router;

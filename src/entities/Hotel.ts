@@ -20,4 +20,10 @@ export default class Hotel extends BaseEntity {
 
   @OneToMany(() => Room, (room) => room.hotel, { eager: true })
   rooms: Room[];
+
+  availableBeds?: number = 0;
+
+  countAvailableBeds(): void {
+    this.rooms.forEach((room) => (this.availableBeds += room.availableBeds));
+  }
 }
