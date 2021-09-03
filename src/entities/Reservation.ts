@@ -28,7 +28,7 @@ export default class Reservation extends BaseEntity {
   @Column()
   roomId: number;
 
-  @Column()
+  @Column({ nullable: true })
   paymentId: number;
 
   @OneToOne(() => User, { eager: true })
