@@ -14,6 +14,7 @@ export default async function authenticationMiddleware(req: Request, res: Respon
     const authHeader = req.header("Authorization");
 
     const token = authHeader?.replace("Bearer ", "");
+
     if (!token) {
       throw new UnauthorizedError();
     } 
