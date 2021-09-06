@@ -4,7 +4,8 @@ import httpStatus from "http-status";
 import * as service from "@/services/client/reservation";
 
 export async function getReservation(req: Request, res: Response) {
-  const reservation = await service.findReservation();
+  const { id } = req.user;
+  const reservation = await service.findReservation(id);
   res.status(httpStatus.OK).send(reservation);
 }
 
