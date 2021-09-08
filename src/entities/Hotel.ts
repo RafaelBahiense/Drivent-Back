@@ -18,7 +18,7 @@ export default class Hotel extends BaseEntity {
   @Column()
   image: string;
 
-  @OneToMany(() => Room, (room) => room.hotel, { eager: true })
+  @OneToMany(() => Room, (room) => room.hotel)
   rooms: Room[];
 
   availableBeds?: number = 0;

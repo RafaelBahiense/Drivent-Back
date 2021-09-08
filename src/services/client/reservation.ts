@@ -1,9 +1,8 @@
 import Reservation from "@/entities/Reservation";
 import Room from "@/entities/Room";
 
-export async function findReservation() {
-  const reservation = await Reservation.find();
-
+export async function findReservation(id: number) {
+  const reservation = await Reservation.findOne( { userId: id } );
   return reservation;
 }
 
