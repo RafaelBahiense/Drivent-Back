@@ -1,8 +1,7 @@
 interface ReservationData {
   userId: number;
-  ticketId: number;
-  roomId?: number;
-  paymentId?: number;
+  isPresencial: boolean;
+  hasHotel: boolean;
 }
 
 export default ReservationData;

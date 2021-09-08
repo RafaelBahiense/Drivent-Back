@@ -4,8 +4,9 @@ import * as controller from "@/controllers/client/reservation";
 
 const router = Router();
 
-router.post("/", controller.createReservation);
+router.post("/new", controller.createReservation);
+router.get("/user", controller.getReservationByUser);
 router.get("/", controller.getReservations);
-router.post("/", controller.updateReservation); //mudar para /update ou para .update
+router.post("/", controller.saveReservation);
 
 export default router;

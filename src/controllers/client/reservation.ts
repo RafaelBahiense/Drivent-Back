@@ -7,8 +7,14 @@ import ReservationData from "@/interfaces/reservation";
 export async function createReservation(req: Request, res: Response) {
   const reservationData = req.body as ReservationData;
   reservationData.userId = req.user.id;
-  await reservationService.createReservation(req.body);
-  res.send(httpStatus.OK);
+  const reservation = await reservationService.createReservation(reservationData);
+  res.status(httpStatus.OK).send(reservation);
+}
+
+export async function getReservationByUser(req: Request, res: Response) {
+  const userId = req.user.id;
+  const reservation = await reservationService.findReservationByUser(userId);
+  res.status(httpStatus.OK).send(reservation);
 }
 
 export async function getReservations(req: Request, res: Response) {
@@ -16,7 +22,7 @@ export async function getReservations(req: Request, res: Response) {
   res.status(httpStatus.OK).send(reservation);
 }
 
-export async function updateReservation(req: Request, res: Response) {
+export async function saveReservation(req: Request, res: Response) {
   const { roomId } = req.body;
   const { id } = req.user;
   if (!roomId) {

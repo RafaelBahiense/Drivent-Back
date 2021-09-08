@@ -4,7 +4,12 @@ import Room from "@/entities/Room";
 import ReservationData from "@/interfaces/reservation";
 
 export async function createReservation(reservationData: ReservationData) {
-  await Reservation.createReservation(reservationData);
+  return await Reservation.createReservation(reservationData);
+}
+
+export async function findReservationByUser(userId: number) {
+  const reservation = await Reservation.findOne({ where: { userId } });
+  return reservation;
 }
 
 export async function findReservations() {

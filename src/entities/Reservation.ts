@@ -22,10 +22,10 @@ export default class Reservation extends BaseEntity {
   @Column()
   userId: number;
 
-  @Column()
+  @Column({ nullable: true })
   ticketId: number;
 
-  @Column()
+  @Column({ nullable: true })
   roomId: number;
 
   @Column({ nullable: true })
@@ -47,12 +47,22 @@ export default class Reservation extends BaseEntity {
   payment: Payment;
 
   static async createReservation(data: ReservationData) {
-    const reservation = Reservation.create();
+    const reservation = this.create();
     reservation.userId = data.userId;
-    reservation.ticketId = data.ticketId;
+
     await reservation.save();
 
+    reservation.ticket = new Ticket();
+    reservation.ticket.isPresencial = data.isPresencial;
+    reservation.ticket.hasHotel = data.hasHotel;
     reservation.ticket.reservationId = reservation.id;
+
     await reservation.ticket.save();
+
+    reservation.ticketId = reservation.ticket.id;
+
+    await reservation.save();
+
+    return reservation;
   }
 }
