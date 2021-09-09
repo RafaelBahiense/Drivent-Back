@@ -7,7 +7,7 @@ import {
 } from "typeorm";
 import Activity from "./Activity";
 
-@Entity("eventDay")
+@Entity("event_day")
 export default class EventDay extends BaseEntity {
   @PrimaryGeneratedColumn()
   id: number;

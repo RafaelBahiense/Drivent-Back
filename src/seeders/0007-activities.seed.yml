@@ -1,0 +1,51 @@
+seeds:
+  - Activity: 
+      id: 1
+      name: "Minecraft: montando o PC ideal"
+      time: "09:00"
+      duration: "60"
+      eventDayId: 1
+      activityPlaceId: 1
+      totalSeats: 30
+  - Activity: 
+      id: 2
+      name: "Dota: montando o PC ideal"
+      time: "10:00"
+      duration: "120"
+      eventDayId: 1
+      activityPlaceId: 1
+      totalSeats: 35
+  - Activity: 
+      id: 3
+      name: "Minecraft: montando o PC ideal"
+      time: "9:00"
+      duration: "60"
+      eventDayId: 1
+      activityPlaceId: 2
+      totalSeats: 40
+  - Activity: 
+      id: 4
+      name: "R6: montando o PC ideal"
+      time: "09:00"
+      duration: "180"
+      eventDayId: 1
+      activityPlaceId: 3
+      totalSeats: 60
+  - Activity: 
+      id: 5
+      name: "Lol: montando o PC ideal"
+      time: "09:00"
+      duration: "120"
+      eventDayId: 2
+      activityPlaceId: 2
+      totalSeats: 40
+  - Activity: 
+      id: 6
+      name: "Cs: montando o PC ideal"
+      time: "09:00"
+      duration: "90"
+      eventDayId: 3
+      activityPlaceId: 3
+      totalSeats: 50
+    
+
