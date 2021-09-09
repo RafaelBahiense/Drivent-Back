@@ -1,0 +1,8 @@
+seeds:
+  - EventDay: 
+      id: 1
+      date: "2021-10-15"
+  - EventDay: 
+      id: 3
+      date: "2021-10-17"
+
