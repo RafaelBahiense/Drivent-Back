@@ -4,9 +4,11 @@ import {
   PrimaryGeneratedColumn,
   Column,
   ManyToOne,
+  OneToMany,
 } from "typeorm";
 import EventDay from "./EventDay";
 import ActivityPlace from "./ActivityPlace";
+import UserActivities from "./UserActivities";
 
 @Entity("activities")
 export default class Activity extends BaseEntity {
@@ -36,4 +38,9 @@ export default class Activity extends BaseEntity {
 
   @ManyToOne(() => ActivityPlace, { eager: true })
   activityPlace: ActivityPlace;
+
+  @OneToMany(() => UserActivities, (userActivity) => userActivity.activity, {
+    eager: true,
+  })
+  users: UserActivities[];
 }
