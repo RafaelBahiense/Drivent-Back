@@ -5,6 +5,7 @@ import { clearDatabase, endConnection } from "../utils/database";
 import { createBasicSettings } from "../utils/app";
 import { createHotel } from "../factories/hotelFactory";
 import { createSession, createUser } from "../factories/userFactory";
+import { createEventDay } from "../factories/eventDayFactory";
 
 const agent = supertest(app);
 
@@ -22,12 +23,12 @@ afterAll(async () => {
   await endConnection();
 });
 
-describe("GET /hotels/", () => {
-  it("should return list of all hotels", async () => {
-    await createHotel();
+describe("GET /activities/", () => {
+  it("should return list of event days containing its activities", async () => {
+    await createEventDay();
     const user = await createUser();
     const token = await createSession(user);
-    const response = await agent.get("/hotels/").set({
+    const response = await agent.get("/activities/").set({
       Authorization: `Bearer ${token}`,
     });
 
@@ -35,10 +36,8 @@ describe("GET /hotels/", () => {
       expect.arrayContaining([
         expect.objectContaining({
           id: expect.any(Number),
-          name: expect.any(String),
-          image: expect.any(String),
-          availableBeds: expect.any(Number),
-          rooms: expect.any(Array),
+          date: expect.any(String),
+          activities: expect.any(Array),
         }),
       ])
     );
