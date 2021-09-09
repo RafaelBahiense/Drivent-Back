@@ -7,12 +7,13 @@ export async function findReservation(id: number) {
 }
 
 export async function saveReservation(roomId: number, userId: number, changeRoom: number) {
-  const reservation = await Reservation.findOne({ where: { userId: userId } });
+  let reservation: boolean | Reservation = await Reservation.findOne({ where: { userId: userId } });
   if (!changeRoom && reservation.room?.id) return;
 
   const room: Room = await Room.findOne({ where: { id: roomId } });
 
-  if(removeRoomVacancyAndSaveReservation(room, reservation) === null) return;
+  reservation = await removeRoomVacancyAndSaveReservation(room, reservation);
+  if(!reservation) return;
   if (changeRoom) await refundRoomVacancy(changeRoom);
   return reservation;
 }
@@ -23,10 +24,11 @@ async function refundRoomVacancy(changeRoom: number) {
   await roomToChange.save();
 }
 
-async function removeRoomVacancyAndSaveReservation(room: Room, reservation: Reservation): Promise<boolean | void> {
+async function removeRoomVacancyAndSaveReservation(room: Room, reservation: Reservation): Promise<boolean | Reservation> {
   if (room.availableBeds < 1) return null;
   room.availableBeds = room.availableBeds - 1;
   await room.save();
   reservation.room = room;
   await reservation.save();
+  return reservation;
 }
