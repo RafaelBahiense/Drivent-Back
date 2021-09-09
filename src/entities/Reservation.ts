@@ -23,7 +23,7 @@ export default class Reservation extends BaseEntity {
   @Column()
   ticketId: number;
 
-  @Column()
+  @Column({ nullable: true })
   roomId: number;
 
   @Column()
