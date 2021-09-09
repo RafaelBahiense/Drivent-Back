@@ -34,6 +34,6 @@ export default class Activity extends BaseEntity {
   @ManyToOne(() => EventDay)
   eventDay: EventDay;
 
-  @ManyToOne(() => ActivityPlace)
+  @ManyToOne(() => ActivityPlace, { eager: true })
   activityPlace: ActivityPlace;
 }
