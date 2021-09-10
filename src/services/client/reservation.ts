@@ -7,19 +7,14 @@ export async function createReservation(reservationData: ReservationData) {
   return await Reservation.createReservation(reservationData);
 }
 
-export async function findReservationByUser(userId: number) {
-  const reservation = await Reservation.findOne({ where: { userId } });
+export async function findReservation(id: number) {
+  const reservation = await Reservation.findOne( { userId: id } );
   return reservation;
 }
 
-export async function findReservations() {
-  const reservation = await Reservation.find();
-  return reservation;
-}
-
-export async function updateReservation(roomId: number, userId: number) {
-  const reservation = await Reservation.findOne({ where: { userId: userId } });
-  const room: Room = await Room.findOne({ where: { id: roomId } });
+export async function insertRoomReservation(roomId: number, userId: number) {
+  const reservation = await Reservation.findOne( { userId: userId } );
+  const room: Room = await Room.findOne( { id: roomId } );
   room.availableBeds = room.availableBeds - 1;
   await room.save();
   reservation.room = room;

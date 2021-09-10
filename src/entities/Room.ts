@@ -21,6 +21,6 @@ export default class Room extends BaseEntity {
   @Column()
   availableBeds: number;
 
-  @ManyToOne(() => Hotel)
+  @ManyToOne(() => Hotel, { eager: true })
   hotel: Hotel;
 }

@@ -11,24 +11,19 @@ export async function createReservation(req: Request, res: Response) {
   res.status(httpStatus.OK).send(reservation);
 }
 
-export async function getReservationByUser(req: Request, res: Response) {
+export async function getReservation(req: Request, res: Response) {
   const userId = req.user.id;
-  const reservation = await reservationService.findReservationByUser(userId);
+  const reservation = await reservationService.findReservation(userId);
   res.status(httpStatus.OK).send(reservation);
 }
 
-export async function getReservations(req: Request, res: Response) {
-  const reservation = await reservationService.findReservations();
-  res.status(httpStatus.OK).send(reservation);
-}
-
-export async function saveReservation(req: Request, res: Response) {
+export async function insertRoomReservation(req: Request, res: Response) {
   const { roomId } = req.body;
   const { id } = req.user;
   if (!roomId) {
     return res.sendStatus(httpStatus.BAD_REQUEST);
   }
 
-  const reservation = await reservationService.updateReservation(roomId, id);
+  const reservation = await reservationService.insertRoomReservation(roomId, id);
   res.status(httpStatus.OK).send(reservation);
 }
