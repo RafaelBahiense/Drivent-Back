@@ -12,6 +12,8 @@ import Room from "./Room";
 import Ticket from "./Ticket";
 import User from "./User";
 
+import ReservationData from "@/interfaces/reservation";
+
 @Entity("reservations")
 export default class Reservation extends BaseEntity {
   @PrimaryGeneratedColumn()
@@ -20,13 +22,13 @@ export default class Reservation extends BaseEntity {
   @Column()
   userId: number;
 
-  @Column()
+  @Column({ nullable: true })
   ticketId: number;
 
   @Column({ nullable: true })
   roomId: number;
 
-  @Column()
+  @Column({ nullable: true })
   paymentId: number;
 
   @OneToOne(() => User, { eager: true })
@@ -40,7 +42,27 @@ export default class Reservation extends BaseEntity {
   @ManyToOne(() => Room, { eager: true })
   room: Room;
 
-  @OneToOne(() => Payment, payment => payment.reservation, { eager: true })
+  @OneToOne(() => Payment, (payment) => payment.reservation, { eager: true })
   @JoinColumn()
   payment: Payment;
+
+  static async createReservation(data: ReservationData) {
+    const reservation = this.create();
+    reservation.userId = data.userId;
+
+    await reservation.save();
+
+    reservation.ticket = new Ticket();
+    reservation.ticket.isPresencial = data.isPresencial;
+    reservation.ticket.hasHotel = data.hasHotel;
+    reservation.ticket.reservationId = reservation.id;
+
+    await reservation.ticket.save();
+
+    reservation.ticketId = reservation.ticket.id;
+
+    await reservation.save();
+
+    return reservation;
+  }
 }
