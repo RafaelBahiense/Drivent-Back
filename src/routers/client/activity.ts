@@ -6,5 +6,5 @@ const router = Router();
 
 router.get("/", controller.getActivitiesDaysList);
 router.post("/", controller.saveActivityUserReservation);
-
+router.post("/delete", controller.deleteActivityUserReservation);
 export default router;

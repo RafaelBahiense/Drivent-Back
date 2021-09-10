@@ -17,8 +17,18 @@ export async function saveActivityUserReservation(req: Request, res: Response) {
   if (!userActivity) {
     return res.sendStatus(403);
   }
-  if (userActivity===true) {
+  if (userActivity === true) {
     return res.sendStatus(409);
   }
   return res.send(userActivity);
+}
+
+export async function deleteActivityUserReservation(
+  req: Request,
+  res: Response
+) {
+  const userId: number = req.user.id;
+  const activityId: number = req.body.activityId;
+  await service.deleteActivityUserReservation(userId, activityId);
+  return res.sendStatus(200);
 }

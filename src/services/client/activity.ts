@@ -34,6 +34,16 @@ export async function saveActivityUserReservation(
   return UserActivity;
 }
 
+export async function deleteActivityUserReservation(
+  userId: number,
+  activityId: number
+) {
+  return await UserActivities.delete({
+    userId: userId,
+    activityId: activityId,
+  });
+}
+
 async function checkActivityTimeConflict(activity: Activity, userId: number) {
   const reservatedSeatsByUserId = await UserActivities.find({
     where: { userId: userId },
