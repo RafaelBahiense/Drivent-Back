@@ -6,6 +6,7 @@ const router = Router();
 
 router.post("/new", controller.createReservation);
 router.get("/", controller.getReservation);
-router.post("/", controller.insertRoomReservation);
+router.post("/room", controller.insertRoomReservation);
+
 
 export default router;

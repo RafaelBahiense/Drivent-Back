@@ -20,16 +20,13 @@ export async function getReservation(req: Request, res: Response) {
 export async function insertRoomReservation(req: Request, res: Response) {
   const { roomId, changeRoom } = req.body;
   const { id } = req.user;
-  if (!roomId) {
+  if (!roomId || !id) {
     return res.sendStatus(httpStatus.BAD_REQUEST);
   }
-  const reservation = await service.insertRoomReservation(
-    roomId,
-    id,
-    changeRoom
-  );
-  if (!reservation) {
-    return res.sendStatus(httpStatus.FORBIDDEN);
+
+  const reservation = await service.insertRoomReservation(roomId, id, changeRoom);
+  if(!reservation) {
+    return res.sendStatus(httpStatus.FORBIDDEN); 
   }
   res.status(httpStatus.OK).send(reservation);
 }
