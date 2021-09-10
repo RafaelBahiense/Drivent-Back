@@ -3,7 +3,6 @@ import supertest from "supertest";
 import app, { init } from "../../src/app";
 import { clearDatabase, endConnection } from "../utils/database";
 import { createBasicSettings } from "../utils/app";
-import { createHotel } from "../factories/hotelFactory";
 import { createSession, createUser } from "../factories/userFactory";
 import { createEventDay } from "../factories/eventDayFactory";
 import { createActivity } from "../factories/activityFactory";
@@ -113,7 +112,7 @@ describe("POST /activities/", () => {
     const activityPlace = await createActivityPlace();
     const activity1 = await createActivity(activityPlace.id, eventDay.id, 1);
     const activity2 = await createActivity(activityPlace.id, eventDay.id, 1);
-    const reservatedSeat = await createSeatReservation(user.id, activity1.id);
+    await createSeatReservation(user.id, activity1.id);
     const response = await agent
       .post("/activities/")
       .send({ activityId: activity2.id })
@@ -124,8 +123,6 @@ describe("POST /activities/", () => {
     expect(response.status).toEqual(409);
   });
 });
-
-////////////////////////////////////////////////////////
 
 describe("POST /activities/delete", () => {
   it("should return status code 200 when reservated seat is deleted", async () => {
