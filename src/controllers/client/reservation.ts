@@ -9,14 +9,14 @@ export async function getReservation(req: Request, res: Response) {
   res.status(httpStatus.OK).send(reservation);
 }
 
-export async function saveReservation(req: Request, res: Response) {
+export async function insertRoomReservation(req: Request, res: Response) {
   const { roomId, changeRoom } = req.body;
   const { id } = req.user;
   if (!roomId) {
     return res.sendStatus(httpStatus.BAD_REQUEST);
   }
 
-  const reservation = await service.saveReservation(roomId, id, changeRoom);
+  const reservation = await service.insertRoomReservation(roomId, id, changeRoom);
   if(!reservation) {
     return res.sendStatus(httpStatus.FORBIDDEN); 
   }

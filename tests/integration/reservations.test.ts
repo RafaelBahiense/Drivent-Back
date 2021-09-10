@@ -72,7 +72,7 @@ describe("POST /reservations", () => {
     const room = await createRoom(1, 1);
     await createReservation(user.id, ticket.id, payment.id);
 
-    const response = await agent.post("/reservation").send({
+    const response = await agent.post("/reservation/room").send({
       roomId: room.id,
     }).set("Authorization", "Bearer " + session.token);
 
@@ -117,7 +117,7 @@ describe("POST /reservations", () => {
     const room = await createRoom(1, 0);
     await createReservation(user.id, ticket.id, payment.id);
 
-    const response = await agent.post("/reservation").send({
+    const response = await agent.post("/reservation/room").send({
       roomId: room.id,
     }).set("Authorization", "Bearer " + session.token);
 
@@ -129,9 +129,9 @@ describe("POST /reservations", () => {
     const room = await createRoom(1, 1);
     await createReservation(user.id, ticket.id, payment.id);
 
-    await agent.post("/reservation").send({ roomId: room.id }).set("Authorization", "Bearer " + session.token);
+    await agent.post("/reservation/room").send({ roomId: room.id }).set("Authorization", "Bearer " + session.token);
 
-    const response = await agent.post("/reservation").send({
+    const response = await agent.post("/reservation/room").send({
       roomId: room.id,
     }).set("Authorization", "Bearer " + session.token);
 
@@ -146,7 +146,7 @@ describe("POST /reservations", () => {
 
     await agent.post("/reservation").send({ roomId: room1.id }).set("Authorization", "Bearer " + session.token);
 
-    const response = await agent.post("/reservation").send({
+    const response = await agent.post("/reservation/room").send({
       roomId: room2.id, changeRoom: room1.id
     }).set("Authorization", "Bearer " + session.token);
 
@@ -193,9 +193,9 @@ describe("POST /reservations", () => {
     const room2 = await createRoom(1, 1);
     await createReservation(user.id, ticket.id, payment.id);
 
-    await agent.post("/reservation").send({ roomId: room1.id }).set("Authorization", "Bearer " + session.token);
+    await agent.post("/reservation/room").send({ roomId: room1.id }).set("Authorization", "Bearer " + session.token);
 
-    const response = await agent.post("/reservation").send({
+    const response = await agent.post("/reservation/room").send({
       roomId: room2.id, changeRoom: room1.id
     }).set("Authorization", "Bearer " + session.token);
 

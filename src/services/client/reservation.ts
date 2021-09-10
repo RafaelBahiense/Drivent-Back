@@ -6,7 +6,7 @@ export async function findReservation(id: number) {
   return reservation;
 }
 
-export async function saveReservation(roomId: number, userId: number, changeRoom: number) {
+export async function insertRoomReservation(roomId: number, userId: number, changeRoom: number) {
   let reservation: boolean | Reservation = await Reservation.findOne({ where: { userId: userId } });
   if (!changeRoom && reservation.room?.id) return;
 
