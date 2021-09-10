@@ -14,10 +14,11 @@ export async function saveActivityUserReservation(req: Request, res: Response) {
     userId,
     activityId
   );
-  console.log(userActivity);
   if (!userActivity) {
-    console.log("entrou no null");
     return res.sendStatus(403);
+  }
+  if (userActivity===true) {
+    return res.sendStatus(409);
   }
   return res.send(userActivity);
 }
