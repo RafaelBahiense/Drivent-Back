@@ -1,14 +1,13 @@
 seeds:
-    - Hotel:
-        id: 1
-        name: "Driven Resort"
-        image: "https://i.ibb.co/bJC8Xcc/Driven-Resort.png"
-    - Hotel:
-        id: 2
-        name: "Driven Palace"
-        image: "https://i.ibb.co/JQ411jN/Driven-Palace.png"
-    - Hotel:
-        id: 3
-        name: "Driven World"
-        image: "https://i.ibb.co/Z2dKHp9/Driven-World.png"
-    
+  - Hotel:
+      id: 1
+      name: "Driven Resort"
+      image: "https://i.ibb.co/bJC8Xcc/Driven-Resort.png"
+  - Hotel:
+      id: 2
+      name: "Driven Palace"
+      image: "https://i.ibb.co/JQ411jN/Driven-Palace.png"
+  - Hotel:
+      id: 3
+      name: "Driven World"
+      image: "https://i.ibb.co/Z2dKHp9/Driven-World.png"
