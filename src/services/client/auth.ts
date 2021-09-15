@@ -15,7 +15,6 @@ export async function signIn(email: string, password: string, session: SessionTy
     userId: user.id,
     sessionId: session.id
   }, process.env.JWT_SECRET);
-
   session.save();
 
   return {

@@ -2,9 +2,9 @@ import { Request, Response, NextFunction } from "express";
 
 import jwt from "jsonwebtoken";
 
-import * as sessionService from "@/services/client/session";
 import UnauthorizedError from "@/errors/Unauthorized";
 import { redisClient } from "@/app";
+import { promisify } from "util";
 
 interface JwtPayload {
   userId: number;
@@ -25,14 +25,16 @@ export default async function authenticationMiddleware(
       throw new UnauthorizedError();
     }
 
-    const { userId, sessionId } = jwt.verify(token, process.env.JWT_SECRET) as JwtPayload;
-    
+    const { userId, sessionId } = jwt.verify(
+      token,
+      process.env.JWT_SECRET
+    ) as JwtPayload;
     const sessionKey = `sess:${sessionId}`;
-    redisClient.get(sessionKey, (err, data) => {
-      if(!data) {
-        throw new UnauthorizedError();
-      }
-    });
+
+    const foundSession = await redisClient.get(sessionKey);
+    if (!foundSession) {
+      throw new UnauthorizedError();
+    }
 
     req.user = { id: userId };
     next();
