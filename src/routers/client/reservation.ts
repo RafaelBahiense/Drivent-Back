@@ -8,5 +8,4 @@ router.post("/new", controller.createReservation);
 router.get("/", controller.getReservation);
 router.post("/room", controller.insertRoomReservation);
 
-
 export default router;

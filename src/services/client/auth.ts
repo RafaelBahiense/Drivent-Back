@@ -3,19 +3,20 @@ import jwt from "jsonwebtoken";
 import UnauthorizedError from "@/errors/Unauthorized";
 import User from "@/entities/User";
 import Session from "@/entities/Session";
+import { Session as SessionType } from "express-session";
 
-export async function signIn(email: string, password: string) {
+export async function signIn(email: string, password: string, session: SessionType) {
   const user = await User.findByEmailAndPassword(email, password);
 
   if (!user) {
     throw new UnauthorizedError();
   }
-
   const token = jwt.sign({
-    userId: user.id
+    userId: user.id,
+    sessionId: session.id
   }, process.env.JWT_SECRET);
 
-  await Session.createNew(user.id, token);
+  session.save();
 
   return {
     user: {
