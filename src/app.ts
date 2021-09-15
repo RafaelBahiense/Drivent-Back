@@ -20,9 +20,9 @@ app.get("/health", (_req, res) => {
   res.send("OK!");
 });
 const RedisStore = connectRedis(session);
+console.log(process.env.REDIS_URL);
 export const redisClient = createNodeRedisClient({
-  host: "localhost",
-  port: 6379
+  url: process.env.REDIS_URL,
 });
 
 redisClient.nodeRedis.on("error", function(err) {
@@ -32,17 +32,19 @@ redisClient.nodeRedis.on("connect", function(err) {
   console.log("Connected to redis successfully");
 });
 
-app.use(session({
-  store: new RedisStore({ client: redisClient.nodeRedis }),
-  secret: "secret$%^134",
-  resave: false,
-  saveUninitialized: false,
-  cookie: {
-    secure: false, 
-    httpOnly: false, 
-    maxAge: 1000 * 60 * 60 * 24
-  }
-}));
+app.use(
+  session({
+    store: new RedisStore({ client: redisClient.nodeRedis }),
+    secret: "secret$%^134",
+    resave: false,
+    saveUninitialized: false,
+    cookie: {
+      secure: false,
+      httpOnly: false,
+      maxAge: 1000 * 60 * 60 * 24,
+    },
+  })
+);
 
 app.use(router);
 app.use(errorHandlingMiddleware);
