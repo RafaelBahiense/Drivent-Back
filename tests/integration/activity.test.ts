@@ -8,6 +8,7 @@ import { createEventDay } from "../factories/eventDayFactory";
 import { createActivity } from "../factories/activityFactory";
 import { createActivityPlace } from "../factories/activityPlaceFactory";
 import { createSeatReservation } from "../factories/userActivityFactory";
+import { redisClient } from "../../src/app";
 
 const agent = supertest(app);
 
@@ -21,6 +22,7 @@ beforeEach(async () => {
 });
 
 afterAll(async () => {
+  redisClient.quit();
   await clearDatabase();
   await endConnection();
 });

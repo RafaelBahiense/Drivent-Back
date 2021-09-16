@@ -9,6 +9,8 @@ import { createUser } from "../factories/userFactory";
 import { createPayment } from "../factories/paymentFactory";
 import { createSession } from "../factories/sessionFactory";
 import { createRoom } from "../factories/roomFactory";
+import { redisClient } from "../../src/app";
+
 
 const agent = supertest(app);
 
@@ -22,6 +24,7 @@ beforeEach(async () => {
 });
 
 afterAll(async () => {
+  redisClient.quit();
   await clearDatabase();
   await endConnection();
 });
@@ -33,7 +36,9 @@ describe("GET /reservations", () => {
     const ticket = await createTicket();
     const payment = await createPayment();
     await createReservation(user.id, ticket.id, payment.id);
-    const response = await agent.get("/reservation").set("Authorization", "Bearer " + session.token);
+    const response = await agent.get("/reservation").set({
+      Authorization: `Bearer ${session}`,
+    });
 
     expect(response.body).toEqual(
       expect.objectContaining({
@@ -74,7 +79,7 @@ describe("POST /reservations", () => {
 
     const response = await agent.post("/reservation/room").send({
       roomId: room.id,
-    }).set("Authorization", "Bearer " + session.token);
+    }).set("Authorization", "Bearer " + session);
 
     expect(response.body).toEqual(
       expect.objectContaining({
@@ -119,7 +124,7 @@ describe("POST /reservations", () => {
 
     const response = await agent.post("/reservation/room").send({
       roomId: room.id,
-    }).set("Authorization", "Bearer " + session.token);
+    }).set("Authorization", "Bearer " + session);
 
     expect(response.status).toEqual(403);
   });
@@ -129,11 +134,11 @@ describe("POST /reservations", () => {
     const room = await createRoom(1, 1);
     await createReservation(user.id, ticket.id, payment.id);
 
-    await agent.post("/reservation/room").send({ roomId: room.id }).set("Authorization", "Bearer " + session.token);
+    await agent.post("/reservation/room").send({ roomId: room.id }).set("Authorization", "Bearer " + session);
 
     const response = await agent.post("/reservation/room").send({
       roomId: room.id,
-    }).set("Authorization", "Bearer " + session.token);
+    }).set("Authorization", "Bearer " + session);
 
     expect(response.status).toEqual(403);
   });
@@ -144,11 +149,11 @@ describe("POST /reservations", () => {
     const room2 = await createRoom(1, 1);
     await createReservation(user.id, ticket.id, payment.id);
 
-    await agent.post("/reservation").send({ roomId: room1.id }).set("Authorization", "Bearer " + session.token);
+    await agent.post("/reservation").send({ roomId: room1.id }).set("Authorization", "Bearer " + session);
 
     const response = await agent.post("/reservation/room").send({
       roomId: room2.id, changeRoom: room1.id
-    }).set("Authorization", "Bearer " + session.token);
+    }).set("Authorization", "Bearer " + session);
 
     expect(response.status).toEqual(200);
     expect(response.body).toEqual(
@@ -193,13 +198,13 @@ describe("POST /reservations", () => {
     const room2 = await createRoom(1, 1);
     await createReservation(user.id, ticket.id, payment.id);
 
-    await agent.post("/reservation/room").send({ roomId: room1.id }).set("Authorization", "Bearer " + session.token);
+    await agent.post("/reservation/room").send({ roomId: room1.id }).set("Authorization", "Bearer " + session);
 
     const response = await agent.post("/reservation/room").send({
       roomId: room2.id, changeRoom: room1.id
-    }).set("Authorization", "Bearer " + session.token);
+    }).set("Authorization", "Bearer " + session);
 
-    const response2 = await agent.get("/reservation").set("Authorization", "Bearer " + session.token);
+    const response2 = await agent.get("/reservation").set("Authorization", "Bearer " + session);
 
     expect(response.status).toEqual(200);
     expect(response2.body.room.id).toEqual(room2.id);

@@ -2,7 +2,7 @@ import faker from "faker";
 import jwt from "jsonwebtoken";
 
 import User from "@/entities/User";
-import Session from "@/entities/Session";
+import { redisClient } from "../../src/app";
 
 export async function createUser() {
   const user = User.create({
@@ -16,10 +16,16 @@ export async function createUser() {
 }
 
 export async function createSession(user: User) {
-  const token = jwt.sign({
-    userId: user.id
-  }, process.env.JWT_SECRET);
+  await redisClient.set("sess:test", "test");
+  await redisClient.expire("sess:test", 30);
 
-  await Session.createNew(user.id, token);
+  const token = jwt.sign(
+    {
+      userId: user.id,
+      sessionId: "test",
+    },
+    process.env.JWT_SECRET
+  );
+
   return token;
 }
