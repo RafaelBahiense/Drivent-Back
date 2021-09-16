@@ -66,7 +66,7 @@ export default class User extends BaseEntity {
   static async setNewPassword(userId: number, password: string) {
     const user = await this.findOne({ id: userId });
     user.password = this.hashPassword(password);
-    user.save();
+    await user.save();
     return user;
   }
 }

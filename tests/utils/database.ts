@@ -29,3 +29,9 @@ export async function clearDatabase() {
 export async function endConnection() {
   await getConnection().close();
 }
+
+export async function clearRecoveryTest() {
+  const connection = getConnection();
+  await connection.query(`TRUNCATE TABLE "users" CASCADE`);
+  await connection.query(`TRUNCATE TABLE "recoveries" CASCADE`);
+}

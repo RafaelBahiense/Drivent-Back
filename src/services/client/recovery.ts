@@ -1,5 +1,4 @@
 import sgMail from "@sendgrid/mail";
-sgMail.setApiKey(process.env.SENDGRID_API_KEY);
 
 import User from "@/entities/User";
 import Recovery from "@/entities/Recovery";
@@ -18,6 +17,7 @@ export async function sendCodeByEmail(email: string) {
     html: `<p>Seu código de recuperação é: ${code}</p>`,
   };
 
+  sgMail.setApiKey(process.env.SENDGRID_API_KEY);
   await sgMail.send(msg);
 
   return true;

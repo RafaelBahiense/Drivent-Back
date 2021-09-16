@@ -23,16 +23,16 @@ afterAll(async () => {
 describe("POST /reservation/new", () => {
   it("should return reservation data with ticket", async () => {
     const response = await agent.post("/reservation/new");
-    console.log(response.body)
+    console.log(response.body);
     expect(response.body).toEqual(
-        expect.objectContaining({
-          id: expect.any(Number),
-          userId: expect.any(Number),
-          ticketId: expect.any(Number),
-          roomId: null,
-          room: null,
-          payment: null,
-        }),
+      expect.objectContaining({
+        id: expect.any(Number),
+        userId: expect.any(Number),
+        ticketId: expect.any(Number),
+        roomId: null,
+        room: null,
+        payment: null,
+      })
     );
   });
 });
