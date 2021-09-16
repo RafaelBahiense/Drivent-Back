@@ -9,8 +9,9 @@ import User from "../../src/entities/User";
 import { clearDatabase, endConnection } from "../utils/database";
 import { createBasicSettings } from "../utils/app";
 import { createUser } from "../factories/userFactory";
+import { redisClient } from "../../src/app";
 
-const agent =  supertest(app);
+const agent = supertest(app);
 
 beforeAll(async () => {
   await init();
@@ -22,6 +23,7 @@ beforeEach(async () => {
 });
 
 afterAll(async () => {
+  redisClient.quit();
   await clearDatabase();
   await endConnection();
 });
@@ -30,7 +32,7 @@ describe("POST /users", () => {
   it("should create a new user", async () => {
     const userData = {
       email: faker.internet.email(),
-      password: "123456"
+      password: "123456",
     };
 
     const response = await agent.post("/users").send(userData);
@@ -40,7 +42,7 @@ describe("POST /users", () => {
       expect.objectContaining({
         id: expect.any(Number),
         email: userData.email,
-        createdAt: expect.any(String)
+        createdAt: expect.any(String),
       })
     );
 
@@ -52,7 +54,7 @@ describe("POST /users", () => {
     const user = await createUser();
     const userData = {
       email: user.email,
-      password: "1234567"
+      password: "1234567",
     };
 
     const response = await agent.post("/users").send(userData);
@@ -64,11 +66,14 @@ describe("POST /users", () => {
   });
 
   it("should not allow creation of user before event start date", async () => {
-    await Setting.update({ name: "start_date" }, { value: dayjs().add(1, "day").toISOString() });
+    await Setting.update(
+      { name: "start_date" },
+      { value: dayjs().add(1, "day").toISOString() }
+    );
 
     const userData = {
       email: faker.internet.email(),
-      password: "123456"
+      password: "123456",
     };
 
     const response = await agent.post("/users").send(userData);
