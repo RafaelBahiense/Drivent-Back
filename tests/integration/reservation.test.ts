@@ -28,19 +28,24 @@ describe("POST /reservation/new", () => {
   it("should return reservation data with ticket", async () => {
     const user = await createUser();
     const session = await createSession(user.id);
-    const response = await agent.post("/reservation/new").send({
-      userId: user.id,
-      isPresencial: true,
-      hasHotel: true
-    }).set("Authorization", "Bearer " + session);
+    const response = await agent
+      .post("/reservation/new")
+      .send({
+        userId: user.id,
+        isPresencial: true,
+        hasHotel: true,
+      })
+      .set("Authorization", "Bearer " + session);
     expect(response.body).toEqual(
       expect.objectContaining({
         id: expect.any(Number),
         userId: expect.any(Number),
         ticketId: expect.any(Number),
-        paymentId: null,
         roomId: null,
-        ticket: expect.any(Object)
+        room: null,
+        payment: null,
+        paymentId: null,
+        ticket: expect.any(Object),
       })
     );
   });

@@ -10,6 +10,7 @@ import reservationRouter from "@/routers/client/reservation";
 import activityRouter from "@/routers/client/activity";
 import paymentRouter from "@/routers/client/payment";
 import avatarRouter from "@/routers/client/avatar";
+import recoveryRouter from "@/routers/client/recovery";
 
 import tokenValidationMiddleware from "@/middlewares/tokenValidationMiddleware";
 
@@ -25,5 +26,6 @@ router.use("/reservation", tokenValidationMiddleware, reservationRouter);
 router.use("/activities", tokenValidationMiddleware, activityRouter);
 router.use("/payments", tokenValidationMiddleware, paymentRouter);
 router.use("/avatar", tokenValidationMiddleware, avatarRouter);
+router.use("/recovery", recoveryRouter);
 
 export default router;
