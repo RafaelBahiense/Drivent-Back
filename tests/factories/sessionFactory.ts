@@ -1,17 +1,17 @@
-import Session from "@/entities/Session";
 import jwt from "jsonwebtoken";
 
+import { redisClient } from "../../src/app";
+
 export async function createSession(userId: number) {
-  const token = jwt.sign({
-    userId
-  }, process.env.JWT_SECRET);
+  await redisClient.set("sess:test", "test");
+  await redisClient.expire("sess:test", 30);
+  const token = jwt.sign(
+    {
+      userId: userId,
+      sessionId: "test",
+    },
+    process.env.JWT_SECRET
+  );
 
-  const session = Session.create({
-    userId,
-    token,
-  });
-
-  await session.save();
-
-  return session;
+  return token;
 }

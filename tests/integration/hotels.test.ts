@@ -5,6 +5,7 @@ import { clearDatabase, endConnection } from "../utils/database";
 import { createBasicSettings } from "../utils/app";
 import { createHotel } from "../factories/hotelFactory";
 import { createSession, createUser } from "../factories/userFactory";
+import { redisClient } from "../../src/app";
 
 const agent = supertest(app);
 
@@ -18,6 +19,7 @@ beforeEach(async () => {
 });
 
 afterAll(async () => {
+  redisClient.quit();
   await clearDatabase();
   await endConnection();
 });
