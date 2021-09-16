@@ -1,6 +1,7 @@
 import CpfNotAvailableError from "@/errors/CpfNotAvailable";
+import CannotEnroll from "@/errors/RollbackEnrollment";
 import EnrollmentData from "@/interfaces/enrollment";
-import { BaseEntity, Entity, PrimaryGeneratedColumn, Column, OneToOne } from "typeorm";
+import { BaseEntity, Entity, PrimaryGeneratedColumn, Column, OneToOne, getConnection } from "typeorm";
 import Address from "@/entities/Address";
 
 @Entity("enrollments")
@@ -48,16 +49,30 @@ export default class Enrollment extends BaseEntity {
   static async createOrUpdate(data: EnrollmentData) {
     let enrollment = await this.findOne({ where: { cpf: data.cpf } });
 
-    if(enrollment && enrollment.userId !== data.userId) {
+    if (enrollment && enrollment.userId !== data.userId) {
       throw new CpfNotAvailableError(data.cpf);
     }
 
     enrollment ||= Enrollment.create();
     enrollment.populateFromData(data);
-    await enrollment.save();
 
-    enrollment.address.enrollmentId = enrollment.id;
-    await enrollment.address.save();
+    const connection = getConnection();
+    const queryRunner = connection.createQueryRunner();
+    await queryRunner.connect();
+    await queryRunner.startTransaction();
+
+    try {
+      await queryRunner.manager.save(enrollment);
+      enrollment.address.enrollmentId = enrollment.id;
+      const address = enrollment.address;
+      await queryRunner.manager.save(address);
+      await queryRunner.commitTransaction();
+    } catch (err) {
+      await queryRunner.rollbackTransaction();
+      throw new CannotEnroll();
+    } finally {
+      await queryRunner.release();
+    }
   }
 
   static async getByUserIdWithAddress(userId: number) {
