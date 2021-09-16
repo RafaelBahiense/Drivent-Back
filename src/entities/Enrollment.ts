@@ -1,6 +1,7 @@
 import CpfNotAvailableError from "@/errors/CpfNotAvailable";
 import CannotEnroll from "@/errors/RollbackEnrollment";
 import EnrollmentData from "@/interfaces/enrollment";
+
 import { BaseEntity, Entity, PrimaryGeneratedColumn, Column, OneToOne, getConnection } from "typeorm";
 import Address from "@/entities/Address";
 
@@ -20,6 +21,9 @@ export default class Enrollment extends BaseEntity {
 
   @Column()
   phone: string;
+
+  @Column({ nullable: true })
+  url: string;
 
   @Column()
   userId: number;
