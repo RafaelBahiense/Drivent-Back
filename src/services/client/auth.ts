@@ -2,7 +2,6 @@ import jwt from "jsonwebtoken";
 
 import UnauthorizedError from "@/errors/Unauthorized";
 import User from "@/entities/User";
-import Session from "@/entities/Session";
 import { Session as SessionType } from "express-session";
 
 export async function signIn(email: string, password: string, session: SessionType) {
